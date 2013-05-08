@@ -19,9 +19,11 @@ module Shellissimo
       when CommandName
         return true if other.equal? self
         return true if name == other.name && aliases == other.aliases
+        false
       when String, Symbol
         return true if other.to_s == @name
         return true if @aliases.include?(other.to_s)
+        false
       else
         false
       end
@@ -35,10 +37,6 @@ module Shellissimo
       result = "\e[1m#{name}\e[0m"
       result += " (aliases: #{aliases.join(", ")})" unless aliases.empty?
       result
-    end
-
-    def inspect
-      "<CommandName:#{self.object_id} name: #{@name.inspect}, aliases: #{@aliases.inspect}"
     end
   end
 
