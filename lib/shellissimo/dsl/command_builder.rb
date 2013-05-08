@@ -17,6 +17,9 @@ module Shellissimo
       end
       alias :shortcuts :shortcut
 
+      #
+      # A block to run upon command execution
+      #
       def run(&block)
         @block = block
       end

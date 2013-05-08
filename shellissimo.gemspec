@@ -16,5 +16,9 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
+  gem.has_rdoc = "yard"
+
+  gem.add_dependency("yard")
+  gem.add_dependency("redcarpet")
   gem.add_development_dependency("minitest")
 end
