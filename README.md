@@ -1,6 +1,6 @@
 # Shellissimo
 
-TODO: Write a gem description
+Minimalistic framework for constructing shell-like applications.
 
 ## Installation
 
