@@ -18,7 +18,9 @@ Gem::Specification.new do |gem|
 
   gem.has_rdoc = "yard"
 
-  gem.add_dependency("yard")
-  gem.add_dependency("redcarpet")
+  gem.add_dependency("json")
+
+  gem.add_development_dependency("yard")
+  gem.add_development_dependency("redcarpet")
   gem.add_development_dependency("minitest")
 end
