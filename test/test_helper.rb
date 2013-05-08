@@ -1,17 +1,24 @@
 require 'rubygems'
+require 'bundler/setup'
+
+lib = File.expand_path('../../lib', __FILE__)
+$:.unshift lib
 
 if ENV["COVERAGE"]
   require 'simplecov'
-  SimpleCov.start
+  SimpleCov.start do
+    add_filter "/test/"
+  end
+  Dir.glob(File.join(lib, "**", "*.rb")).each { |f| require f }
 elsif ENV["TRAVIS"]
   require 'coveralls'
   Coveralls.wear!
 end
 
 require 'minitest/unit'
-require 'minitest/pride'
+require 'minitest/reporters'
 
-$:.unshift File.expand_path('../../lib', __FILE__)
+MiniTest::Reporters.use! MiniTest::Reporters::SpecReporter.new
 
 class ShellissimoTestCase < MiniTest::Unit::TestCase
   def self.test(name, &block)
