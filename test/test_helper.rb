@@ -13,7 +13,7 @@ require 'minitest/pride'
 
 $:.unshift File.expand_path('../../lib', __FILE__)
 
-class FacebokrTestCase < MiniTest::Unit::TestCase
+class ShellissimoTestCase < MiniTest::Unit::TestCase
   def self.test(name, &block)
     raise ArgumentError, "Example name can't be empty" if String(name).empty?
     block ||= proc { skip "Not implemented yet" }
