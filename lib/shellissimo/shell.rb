@@ -28,7 +28,7 @@ module Shellissimo
       c.run { |*| exit 0 }
     end
 
-    def initialize
+    def initialize(*)
       @input_parser = InputParser.new(self.class.commands)
     end
 
@@ -41,7 +41,7 @@ module Shellissimo
     def run_command(str)
       Shellissimo.with_error_handling do
         command = @input_parser.parse_command(str)
-        puts format command[]
+        puts format instance_eval(&command.block)
       end
     end
 
