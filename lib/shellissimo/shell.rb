@@ -13,6 +13,26 @@ module Shellissimo
   #
   # Supports REPL and one-shot mode
   #
+  # Commands are instance-evaled against Shell instance,
+  # so all instance variables are available in command blocks.
+  #
+  # Example:
+  #
+  #   class MyShell < Shellissimo::Shell
+  #     command :hi do |c|
+  #       c.description "Says hello to the user"
+  #       c.run { |params| @greeter.say_hi(params[:user]) }
+  #     end
+  #
+  #     def initialize
+  #       @greeter = Greeter.new
+  #     end
+  #   end
+  #
+  # Usage:
+  #
+  #   -> hi user: "vlyrs"
+  #
   class Shell
     include DSL
 
