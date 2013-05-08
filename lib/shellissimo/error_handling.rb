@@ -1,5 +1,8 @@
 module Shellissimo
 
+  #
+  # Wraps code in catch-all block
+  #
   def self.with_error_handling
     begin
       yield

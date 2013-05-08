@@ -9,10 +9,6 @@ class TestInputParser < ShellissimoTestCase
     assert_equal parser.parse_command("foo").name, "foo"
   end
 
-  test "returns curried command with parsed params prepended" do
-    assert_equal [{ :a => 1 }, "ohai"], parser.parse_command('foo "a": 1')["ohai"]
-  end
-
   test "supports multiple params" do
     assert_equal [{ :a => 1, :b => 2 }], parser.parse_command('foo "a": 1, "b": 2')[]
   end
