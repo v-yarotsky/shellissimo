@@ -22,12 +22,12 @@ class TestCommand < ShellissimoTestCase
     assert called, "expected command block to be called"
   end
 
-  test "#prepend_params strips unknown params" do
+  test "#prepend_params return command copy with curried block" do
     received_params = {}
-    c = command("foo", "", [], [sample_param_definition]) { |params| received_params = params }
-    c = c.prepend_params(:removed => 1, :bar => 2)
+    c = command("foo") { |params| received_params = params }
+    c = c.prepend_params(:foo => 1, :bar => 2)
     c.call
-    assert_equal ({ :bar => 2 }), received_params, "expected unknown params to be removed"
+    assert_equal ({ :foo => 1, :bar => 2 }), received_params
   end
 
   test "#prepend_params runs validations over params" do

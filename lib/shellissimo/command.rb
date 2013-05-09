@@ -33,15 +33,12 @@ module Shellissimo
     private
 
     def filter_params(params)
-      acceptable_param_names = @param_definitions.map(&:name).map(&:to_s)
-      filtered = Hash[params.select { |k, v| acceptable_param_names.include? k.to_s }]
-
       filtered = {}
       @param_definitions.each do |p|
         raise ArgumentError, "param '#{p.name}' is not valid!" unless p.valid?(params[p.name])
         filtered[p.name] = params[p.name]
       end
-      filtered
+      filtered.merge(params)
     end
   end
 
