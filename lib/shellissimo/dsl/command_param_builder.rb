@@ -5,7 +5,7 @@ module Shellissimo
   module DSL
 
     class CommandParamBuilder
-      attr_reader :name, :description
+      attr_reader :name, :description, :validator
 
       def initialize(name)
         @name = name

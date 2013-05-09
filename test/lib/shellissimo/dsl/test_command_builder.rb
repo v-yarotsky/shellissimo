@@ -30,16 +30,28 @@ class TestCommandBuilder < ShellissimoTestCase
     assert_instance_of CommandParamBuilder, param_builder
   end
 
-  #test "#mandatory_param yields builder with presence validator" do
-  #  param_builder = nil
-  #  builder("foo") { |c| c.mandatory_param("bar") { |p| param_builder = p } }
-  #  assert_equal :mandatory, param_builder.stock_validator
-  #end
+  test "#param returns CommandParam" do
+    param = nil
+    builder("foo") { |c| param = c.param("bar") }
+    assert_instance_of Shellissimo::CommandParam, param
+  end
+
+  test "#mandatory_param yields builder with presence validator" do
+    fake_param_builder = Class.new do
+      attr_reader :mandatory
+      def initialize(*); @mandatory = false; end
+      def mandatory!;    @mandatory = true;  end
+      def result;                            end
+    end
+    param_builder = nil
+    builder("foo", fake_param_builder) { |c| c.mandatory_param("bar") { |p| param_builder = p } }
+    assert param_builder.mandatory, "expected param to be built as mandatory"
+  end
 
   private
 
-  def builder(name)
-    c = CommandBuilder.new(name)
+  def builder(name, *args)
+    c = CommandBuilder.new(name, *args)
     c.run {}
     yield c if block_given?
     c

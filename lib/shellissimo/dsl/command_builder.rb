@@ -5,9 +5,10 @@ module Shellissimo
   module DSL
 
     class CommandBuilder
-      def initialize(name)
+      def initialize(name, param_builder_class = CommandParamBuilder)
         @name = name
         @param_definitions = []
+        @param_builder_class = param_builder_class
       end
 
       def description(desc)
@@ -26,12 +27,24 @@ module Shellissimo
         @block = block
       end
 
+      #
+      # Defines a single command param
+      # @see CommandParamBuilder
+      # @param name [String] name for command param
+      # @yieldparam [CommandParamBuilder]
+      # @return [CommandParam]
+      #
       def param(name)
-        builder = CommandParamBuilder.new(name)
+        builder = @param_builder_class.new(name)
         yield builder if block_given?
         @param_definitions << builder.result
+        builder.result
       end
 
+      #
+      # Defines mandatory command param
+      # @see #param
+      #
       def mandatory_param(name)
         param(name) { |p| p.mandatory!; yield p if block_given? }
       end

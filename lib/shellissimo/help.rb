@@ -1,5 +1,8 @@
 module Shellissimo
 
+  #
+  # Generates help secion based on commands defined for a shell
+  #
   class Help
     def initialize(commands)
       @commands = commands

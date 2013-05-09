@@ -21,9 +21,8 @@ module Shellissimo
       def command(name)
         builder = CommandBuilder.new(name)
         yield builder
-        commands << builder.result
+        add_command(builder.result)
       end
-
     end
 
     module ClassMethods
@@ -31,7 +30,14 @@ module Shellissimo
       # @return [CommandsCollection] a list of defined commands
       #
       def commands
-        @@commands ||= CommandsCollection.new
+        CommandsCollection.new
+      end
+
+      def add_command(command)
+        new_commands = (commands << command)
+        define_singleton_method :commands do
+          new_commands
+        end
       end
     end
   end

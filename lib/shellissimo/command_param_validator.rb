@@ -29,11 +29,11 @@ module Shellissimo
     alias :[] :call
 
     def &(other)
-      CommandParamValidator.new(other.description) { |value| block[value] && other.block[value] }
+      CommandParamValidator.new(description) { |value| block[value] && other.block[value] }
     end
 
     def |(other)
-      CommandParamValidator.new(other.description) { |value| block[value] || other.block[value] }
+      CommandParamValidator.new(description) { |value| block[value] || other.block[value] }
     end
   end
 
