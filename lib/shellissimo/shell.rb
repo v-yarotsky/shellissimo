@@ -42,7 +42,7 @@ module Shellissimo
       c.run do |*|
         result = "Available commands:\n\n"
         print_command = proc { |cmd| result += "%-40s - %s\n" % [cmd.name, cmd.description] }
-        commands.partition { |c| !%w(help quit).include? c.name.name }.each do |some_commands|
+        self.class.commands.partition { |c| !%w(help quit).include? c.name.name }.each do |some_commands|
           some_commands.sort_by(&:name).each(&print_command)
           result += "\n"
         end

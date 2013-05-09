@@ -30,7 +30,7 @@ module Shellissimo
       # @return [Array] a list of defined commands
       #
       def commands
-        @commands ||= begin
+        @@commands ||= begin
           c = Array.new
           def c.find_by_name_or_alias(name_or_alias)
             detect { |c| c.name == name_or_alias } or
