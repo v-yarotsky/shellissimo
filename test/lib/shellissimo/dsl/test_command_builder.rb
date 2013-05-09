@@ -30,11 +30,11 @@ class TestCommandBuilder < ShellissimoTestCase
     assert_instance_of CommandParamBuilder, param_builder
   end
 
-  test "#mandatory_param yields builder with presence validator" do
-    param_builder = nil
-    builder("foo") { |c| c.mandatory_param("bar") { |p| param_builder = p } }
-    assert_equal :mandatory, param_builder.stock_validator
-  end
+  #test "#mandatory_param yields builder with presence validator" do
+  #  param_builder = nil
+  #  builder("foo") { |c| c.mandatory_param("bar") { |p| param_builder = p } }
+  #  assert_equal :mandatory, param_builder.stock_validator
+  #end
 
   private
 

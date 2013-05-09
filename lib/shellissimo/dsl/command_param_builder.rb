@@ -9,7 +9,6 @@ module Shellissimo
 
       def initialize(name)
         @name = name
-        @stock_validator = :noop
         @validator = CommandParamValidator.noop
       end
 
