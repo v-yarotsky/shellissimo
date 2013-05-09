@@ -28,30 +28,32 @@ Usage
 
 Create your shell by sublcassing ``Shellissimo::Shell``
 
-    require 'shellissimo'
+```ruby
+  require 'shellissimo'
 
-    class Greeter; def say_hi(name, title); p "hi #{title} #{name}"; end; end
+  class Greeter; def say_hi(name, title); p "hi #{title} #{name}"; end; end
 
-    class MyShell < Shellissimo::Shell
-      command :hi do |c|
-        c.description "Says hello to the user"
-        c.mandatory_param(:user) do |p|
-          p.description "User name"
-          p.validate { |v| !v.to_s.strip.empty? }
-        end
-        c.param(:title) do |p|
-          p.validate { |v| %w(Mr. Ms.).include?(v.to_s) }
-        end
-        c.run { |params| @greeter.say_hi(params[:user], params[:title]) }
+  class MyShell < Shellissimo::Shell
+    command :hi do |c|
+      c.description "Says hello to the user"
+      c.mandatory_param(:user) do |p|
+        p.description "User name"
+        p.validate { |v| !v.to_s.strip.empty? }
       end
-
-      def initialize
-        @greeter = Greeter.new
-        super
+      c.param(:title) do |p|
+        p.validate { |v| %w(Mr. Ms.).include?(v.to_s) }
       end
+      c.run { |params| @greeter.say_hi(params[:user], params[:title]) }
     end
 
-    MyShell.new.run
+    def initialize
+      @greeter = Greeter.new
+      super
+    end
+  end
+
+  MyShell.new.run
+```
 
 In this example help message would look like:
 
