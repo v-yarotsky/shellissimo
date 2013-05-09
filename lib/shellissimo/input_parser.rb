@@ -6,7 +6,7 @@ module Shellissimo
     COMMAND_PATTERN = /(\w+)(?:\s*(.*))/
 
     #
-    # @param commands [#find_by_name_or_alias] a list of commands
+    # @param commands [CommandsCollection] a list of commands
     #
     def initialize(commands)
       @commands = commands
@@ -18,7 +18,7 @@ module Shellissimo
     #
     def parse_command(line)
       command_name, command_params = line.match(COMMAND_PATTERN)[1..2]
-      command = @commands.find_by_name_or_alias(command_name)
+      command = @commands[command_name]
       command.prepend_params(parse_params(command_params))
     end
 

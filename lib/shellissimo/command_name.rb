@@ -6,8 +6,8 @@ module Shellissimo
     attr_reader :name, :aliases
 
     def initialize(name, aliases = [])
-      @name, @aliases = String(name), Array(aliases).map(&:to_s)
-      raise ArgumentError, "command name can't be blank" if @name.empty?
+      raise ArgumentError, "command name can't be blank" if String(name).empty?
+      @name, @aliases = name.to_sym, Array(aliases).map(&:to_sym)
     end
 
     def hash
@@ -21,13 +21,14 @@ module Shellissimo
         return true if name == other.name && aliases == other.aliases
         false
       when String, Symbol
-        return true if other.to_s == @name
-        return true if @aliases.include?(other.to_s)
+        return true if other.to_sym == @name
+        return true if @aliases.include?(other.to_sym)
         false
       else
         false
       end
     end
+    alias :eql? :==
 
     def <=>(other)
       self == other or name <=> other.name

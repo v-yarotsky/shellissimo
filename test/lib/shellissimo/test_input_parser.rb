@@ -25,9 +25,7 @@ class TestInputParser < ShellissimoTestCase
   private
 
   def commands
-    cmds = [Command.new("foo") { |*args| args }]
-    def cmds.find_by_name_or_alias(name); first; end
-    cmds
+    { "foo" => Command.new("foo") { |*args| args } }
   end
 
   def parser

@@ -10,7 +10,7 @@ class TestDsl < ShellissimoTestCase
         c.run { :hello }
       end
     end
-    assert f.commands.find_by_name_or_alias("foo"), "expected command 'foo' to be defined"
+    assert f.commands["foo"], "expected command 'foo' to be defined"
   end
 
   test ".command yields a builder" do

@@ -16,7 +16,7 @@ module Shellissimo
     def render
       line "Available commands:"
       line
-      @commands.partition { |c| !%w(help quit).include? c.name.name }.each do |cs|
+      @commands.partition { |c| !builtin_commands.include? c }.each do |cs|
         cs.sort_by(&:name).each(&method(:render_command))
         line
       end
@@ -24,6 +24,10 @@ module Shellissimo
 
     def line(str = "")
       @rendered += "#{str}\n"
+    end
+
+    def builtin_commands
+      %w(help quit).map { |n| @commands[n] }
     end
 
     def render_command(cmd)
@@ -37,9 +41,8 @@ module Shellissimo
 
     def render_name_and_description(name, description, name_format)
       formatted_name = name_format % [name]
-      formatted_description = ""
       formatted_description = " - %s" % [description] unless description.empty?
-      line formatted_name + formatted_description
+      line String(formatted_name) + String(formatted_description)
     end
   end
 

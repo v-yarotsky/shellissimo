@@ -1,4 +1,5 @@
 require 'shellissimo/dsl/command_builder'
+require 'shellissimo/commands_collection'
 
 module Shellissimo
   class CommandNotFoundError < StandardError; end
@@ -27,17 +28,10 @@ module Shellissimo
 
     module ClassMethods
       #
-      # @return [Array] a list of defined commands
+      # @return [CommandsCollection] a list of defined commands
       #
       def commands
-        @@commands ||= begin
-          c = Array.new
-          def c.find_by_name_or_alias(name_or_alias)
-            detect { |c| c.name == name_or_alias } or
-              raise CommandNotFoundError, "Command #{name_or_alias} not found"
-          end
-          c
-        end
+        @@commands ||= CommandsCollection.new
       end
     end
   end

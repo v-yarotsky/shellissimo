@@ -45,6 +45,10 @@ class TestCommandName < ShellissimoTestCase
     refute_equal command_name("foo"), 1
   end
 
+  test "hashes of equal instances are equal" do
+    assert_equal command_name("foo").hash, command_name("foo").hash
+  end
+
   test "is sorted by name" do
     assert command_name("foo") > command_name("bar"), "expected 'foo' to be greater than 'bar'"
     assert command_name("bar") < command_name("baz"), "expected 'bar' to be less than 'baz'"
