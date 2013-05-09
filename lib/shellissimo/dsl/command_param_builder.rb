@@ -5,11 +5,12 @@ module Shellissimo
   module DSL
 
     class CommandParamBuilder
-      attr_reader :name, :description, :validator
+      attr_reader :name, :description
 
       def initialize(name)
         @name = name
         @validator = CommandParamValidator.noop
+        @kind = :optional
       end
 
       def description(desc)
@@ -17,15 +18,36 @@ module Shellissimo
       end
 
       def validate(description = "", &block)
-        @validator = CommandParamValidator.new(description, &block)
+        @validator = @validator & CommandParamValidator.new(description, &block)
       end
 
+      #
+      # @private
+      #
       def mandatory!
-        @validator = CommandParamValidator.mandatory & @validator
+        @kind = :mandatory
+      end
+
+      #
+      # @private
+      #
+      def optional!
+        @kind = :optional
       end
 
       def result
-        CommandParam.new(@name, @validator, @description)
+        CommandParam.new(@name, validator, @description)
+      end
+
+      private
+
+      def validator
+        case @kind
+        when :optional
+          CommandParamValidator.optional | @validator
+        when :mandatory
+          CommandParamValidator.mandatory & @validator
+        end
       end
     end
 

@@ -28,17 +28,17 @@ module Shellissimo
       end
 
       #
-      # Defines a single command param
+      # Defines a single command param (optional)
       # @see CommandParamBuilder
       # @param name [String] name for command param
       # @yieldparam [CommandParamBuilder]
       # @return [CommandParam]
       #
       def param(name)
-        builder = @param_builder_class.new(name)
-        yield builder if block_given?
-        @param_definitions << builder.result
-        builder.result
+        build_param(name) do |p|
+          p.optional!
+          yield p if block_given?
+        end
       end
 
       #
@@ -46,11 +46,23 @@ module Shellissimo
       # @see #param
       #
       def mandatory_param(name)
-        param(name) { |p| p.mandatory!; yield p if block_given? }
+        build_param(name) do |p|
+          p.mandatory!
+          yield p if block_given?
+        end
       end
 
       def result
         Command.new(String(@name), @description, @aliases, @param_definitions, &@block)
+      end
+
+      private
+
+      def build_param(name)
+        builder = @param_builder_class.new(name)
+        yield builder if block_given?
+        @param_definitions << builder.result
+        builder.result
       end
     end
 

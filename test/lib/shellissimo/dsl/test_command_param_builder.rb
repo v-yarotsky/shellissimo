@@ -23,6 +23,12 @@ class TestCommandParamBuilder < ShellissimoTestCase
     assert called, "expected validation block to be set"
   end
 
+  test "#validate respects mandatory/optional" do
+    param = builder("foo") { |c| c.optional!; c.validate { |v| v == 1 } }.result
+    assert param.valid?(nil), "expected param to be optional"
+    refute param.valid?(2), "expected param to be checked by custom validator"
+  end
+
   private
 
   def builder(name)

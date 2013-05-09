@@ -4,6 +4,14 @@ require 'shellissimo/dsl/command_builder'
 include Shellissimo::DSL
 
 class TestCommandBuilder < ShellissimoTestCase
+  class FakeParamBuilder
+    attr_reader :mandatory, :optional
+    def initialize(*); @mandatory = false; end
+    def mandatory!;    @mandatory = true;  end
+    def optional!;     @optional = true;   end
+    def result;                            end
+  end
+
   test "sets command name" do
     assert_equal builder("foo").result.name, "foo"
   end
@@ -36,15 +44,15 @@ class TestCommandBuilder < ShellissimoTestCase
     assert_instance_of Shellissimo::CommandParam, param
   end
 
-  test "#mandatory_param yields builder with presence validator" do
-    fake_param_builder = Class.new do
-      attr_reader :mandatory
-      def initialize(*); @mandatory = false; end
-      def mandatory!;    @mandatory = true;  end
-      def result;                            end
-    end
+  test "#param yields builder for optional param" do
     param_builder = nil
-    builder("foo", fake_param_builder) { |c| c.mandatory_param("bar") { |p| param_builder = p } }
+    builder("foo", FakeParamBuilder) { |c| c.param("bar") { |p| param_builder = p } }
+    assert param_builder.optional, "expected param to be built as optional"
+  end
+
+  test "#mandatory_param yields builder with presence validator" do
+    param_builder = nil
+    builder("foo", FakeParamBuilder) { |c| c.mandatory_param("bar") { |p| param_builder = p } }
     assert param_builder.mandatory, "expected param to be built as mandatory"
   end
 

@@ -9,7 +9,7 @@ module Shellissimo
       end
 
       def optional
-        new("optional") { |v| true }
+        new("optional") { |v| v.nil? }
       end
 
       def mandatory
