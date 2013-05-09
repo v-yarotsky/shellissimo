@@ -4,10 +4,12 @@ require 'bundler/setup'
 lib = File.expand_path('../../lib', __FILE__)
 $:.unshift lib
 
-if ENV["TRAVIS"]
+if ENV["COVERAGE"]
   require 'simplecov'
-  require 'coveralls'
-  SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+  if ENV["TRAVIS"]
+    require 'coveralls'
+    SimpleCov.formatter = Coveralls::SimpleCov::Formatter
+  end
   SimpleCov.start do
     add_filter "/test/"
   end

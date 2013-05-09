@@ -6,3 +6,5 @@ rvm:
 branches:
   only:
     - master
+env:
+  - COVERAGE=true
