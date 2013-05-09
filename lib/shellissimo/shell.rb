@@ -2,6 +2,7 @@ require 'readline'
 require 'shellissimo/error_handling'
 require 'shellissimo/dsl'
 require 'shellissimo/input_parser'
+require 'shellissimo/help'
 
 module Shellissimo
 
@@ -39,18 +40,7 @@ module Shellissimo
     command :help do |c|
       c.shortcut :h
       c.description "Show available commands"
-      c.run do |*|
-        result = "Available commands:\n\n"
-        print_command = proc do |cmd|
-          result += "%-40s - %s\n" % [cmd.name, cmd.description]
-          cmd.param_definitions.each { |p| result += "  %-30s - %s\n" % [p.name, p.description] }
-        end
-        self.class.commands.partition { |c| !%w(help quit).include? c.name.name }.each do |cs|
-          cs.sort_by(&:name).each(&print_command)
-          result += "\n"
-        end
-        result.chomp
-      end
+      c.run { |*| Help.new(self.class.commands).rendered }
     end
 
     command :quit do |c|
