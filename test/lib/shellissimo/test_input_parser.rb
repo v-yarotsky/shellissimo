@@ -1,6 +1,7 @@
 require 'test_helper'
 require 'shellissimo/input_parser'
 require 'shellissimo/command'
+require 'shellissimo/command_param'
 
 include Shellissimo
 
@@ -14,17 +15,18 @@ class TestInputParser < ShellissimoTestCase
   end
 
   test "supports quoted params" do
-    assert_equal [{ :a => "hello, world" }], parser.parse_command('foo "a": "hello, world"')[]
+    assert_equal [{ :a => "hello, world", :b => nil }], parser.parse_command('foo "a": "hello, world"')[]
   end
 
   test "supports unquoted keys" do
-    assert_equal [{ :a => "hello, world" }], parser.parse_command('foo a: "hello, world"')[]
+    assert_equal [{ :a => "hello, world", :b => nil }], parser.parse_command('foo a: "hello, world"')[]
   end
 
   private
 
   def commands
-    cmds = [Command.new("foo") { |*args| args }]
+    cmd = Command.new("foo", "", [], [CommandParam.new(:a), CommandParam.new(:b)]) { |*args| args }
+    cmds = [cmd]
     def cmds.find_by_name_or_alias(name); first; end
     cmds
   end

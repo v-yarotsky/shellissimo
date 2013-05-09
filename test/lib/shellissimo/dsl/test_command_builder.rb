@@ -20,6 +20,22 @@ class TestCommandBuilder < ShellissimoTestCase
     assert_equal :hi, builder("foo") { |c| c.run { :hi } }.result.call
   end
 
+  test "#param creates a param" do
+    assert_includes builder("foo") { |c| c.param("bar") }.result.param_definitions.map(&:name), :bar
+  end
+
+  test "#param yields CommandParamBuilder" do
+    param_builder = nil
+    builder("foo") { |c| c.param("bar") { |p| param_builder = p } }
+    assert_instance_of CommandParamBuilder, param_builder
+  end
+
+  test "#mandatory_param yields CommandParamBuilder with mandatory stock validator" do
+    param_builder = nil
+    builder("foo") { |c| c.mandatory_param("bar") { |p| param_builder = p } }
+    assert_equal :mandatory, param_builder.stock_validator
+  end
+
   private
 
   def builder(name)

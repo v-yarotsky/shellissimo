@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'shellissimo/command'
+require 'ostruct'
 
 include Shellissimo
 
@@ -21,10 +22,33 @@ class TestCommand < ShellissimoTestCase
     assert called, "expected command block to be called"
   end
 
+  test "#prepend_params strips unknown params" do
+    received_params = {}
+    c = command("foo", "", [], [sample_param_definition]) { |params| received_params = params }
+    c = c.prepend_params(:removed => 1, :bar => 2)
+    c.call
+    assert_equal ({ :bar => 2 }), received_params, "expected unknown params to be removed"
+  end
+
+  test "#prepend_params runs validations over params" do
+    param_definition = sample_param_definition
+    def param_definition.valid?(*); false; end
+    c = command("foo", "", [], [param_definition]) { |params| received_params = params }
+    assert_raises ArgumentError do
+      c.prepend_params(:removed => 1, :bar => 2)
+    end
+  end
+
   private
 
   def command(*args, &block)
     Command.new(*args, &block)
+  end
+
+  def sample_param_definition
+    param_definition = OpenStruct.new(:name => :bar)
+    def param_definition.valid?(*); true; end
+    param_definition
   end
 end
 
