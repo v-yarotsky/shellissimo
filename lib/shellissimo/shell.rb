@@ -41,9 +41,12 @@ module Shellissimo
       c.description "Show available commands"
       c.run do |*|
         result = "Available commands:\n\n"
-        print_command = proc { |cmd| result += "%-40s - %s\n" % [cmd.name, cmd.description] }
-        self.class.commands.partition { |c| !%w(help quit).include? c.name.name }.each do |some_commands|
-          some_commands.sort_by(&:name).each(&print_command)
+        print_command = proc do |cmd|
+          result += "%-40s - %s\n" % [cmd.name, cmd.description]
+          cmd.param_definitions.each { |p| result += "  %-30s - %s\n" % [p.name, p.description] }
+        end
+        self.class.commands.partition { |c| !%w(help quit).include? c.name.name }.each do |cs|
+          cs.sort_by(&:name).each(&print_command)
           result += "\n"
         end
         result.chomp
@@ -51,6 +54,7 @@ module Shellissimo
     end
 
     command :quit do |c|
+      c.shortcut :exit
       c.description "Quit #$0"
       c.run { |*| exit 0 }
     end
