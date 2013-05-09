@@ -34,7 +34,7 @@ module Shellissimo
           c = Array.new
           def c.find_by_name_or_alias(name_or_alias)
             detect { |c| c.name == name_or_alias } or
-              raise CommandNotFoundError, "Command #{command_name} not found"
+              raise CommandNotFoundError, "Command #{name_or_alias} not found"
           end
           c
         end
