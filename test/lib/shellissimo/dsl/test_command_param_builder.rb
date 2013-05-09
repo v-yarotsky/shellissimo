@@ -16,7 +16,7 @@ class TestCommandParamBuilder < ShellissimoTestCase
     refute builder("foo") { |c| c.mandatory! }.result.valid?(nil), "expected param to be mandatory"
   end
 
-  test "#validate sets validation block" do
+  test "#validate sets validator" do
     called = false
     param = builder("foo") { |c| c.validate { |v| called = true } }.result
     param.valid?(:anything)

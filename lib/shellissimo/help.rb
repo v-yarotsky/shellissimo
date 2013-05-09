@@ -31,18 +31,18 @@ module Shellissimo
     end
 
     def render_command(cmd)
-      render_name_and_description(cmd.name, cmd.description, "%-40s")
+      render_name_and_description(cmd.name, "%-40s", cmd.description)
       cmd.param_definitions.each { |p| render_param(p) }
     end
 
     def render_param(param)
-      render_name_and_description(param.name, param.description, "  %-30s")
+      render_name_and_description(param.name, "  %-30s", param.description, param.validator.description)
     end
 
-    def render_name_and_description(name, description, name_format)
+    def render_name_and_description(name, name_format, *details)
       formatted_name = name_format % [name]
-      formatted_description = " - %s" % [description] unless description.empty?
-      line String(formatted_name) + String(formatted_description)
+      details.map! { |d| " - %s" % [d] unless d.empty? }
+      line String(formatted_name) + details.join
     end
   end
 
