@@ -31,7 +31,7 @@ Create your shell by sublcassing ``Shellissimo::Shell``
 ```ruby
 require 'shellissimo'
 
-class Greeter; def say_hi(name, title); p "hi #{title} #{name}"; end; end
+class Greeter; def say_hi(name, title); "hi #{title} #{name}"; end; end
 
 class MyShell < Shellissimo::Shell
   command :hi do |c|
